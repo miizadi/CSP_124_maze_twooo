@@ -1,0 +1,85 @@
+#This is a turtle program made to demonstrate different techniques by having the program contruct a maze and allow the user to control it from one point to another. 
+
+#these are the import code, which import needed resources from the python library into the program and for my own convinience I have went ahead and renamed some of them as such...
+import turtle as trtl
+import random as rand
+
+t = trtl.Turtle()
+#The mainpiece variable represents the turtle which in my opinion is the main piece of the program hence why the name. I also gave this turtle the shape of the traditional shape of the turtle.
+mainpiece = trtl.Turtle(shape = "turtle")
+#These are all the basic variables that are used in this program with different values and purposes. 
+#pensize is for the thickness of the lines/walls of the maze.
+t.pensize(10)
+#speed is meant for the speed in which the program runs in and the value 0 is the quickest value for the program to run in. 
+t.speed(0)
+#This variable sumnum, actually stands for some number, which is the value used in the for h in range loop, meant to loop as many times as number sumnum is which in this case is 20.
+sumnum = 20
+#both path width and wall length equal one another because wall length is how far the lines draw before every turn and path width is pretty similar, in which it controls the thickness of the path in between the lines, the room for the movement of the turtle, making them equal to one another allows the code to be consistant with how it contructs the maze.
+path_width = 25
+wall_len = path_width
+#This turl functions was meant to be named twerl as in a spiral meant for the maze, but I did not know how to spell it correctly and worried that the correct spelling might hinder my success. 
+def turl():
+#this is the main loop that contructs the walls and the spiral with the random number from the variable sumnum. 
+  for h in range (sumnum):
+#global allows the variable to be used inside and outside the function with flexibility which is a means of abstraction. 
+    global wall_len
+    wall_len = wall_len + path_width
+#This is another loop which always has to work because h will always be greater than 4. This loop is meant fot the contructions of the doors and barriers throughout the maze. It randomizes different sequence of the door placement and Barier placement. This loop also allows the and the placement of the doors and barriers to be consistant with one another and the maze itself, to not have any overlapping or graphical errors.  
+    if (h > 4):
+      t.left(90)
+      door = rand.randint(path_width*2, (wall_len - path_width*2))
+      barer = rand.randint(path_width*2, (wall_len - path_width*2))
+      while abs(door-barer) < path_width:
+        door = rand.randint(path_width*2, (wall_len - path_width*2))
+      if (door < barer):
+        dar(door)
+        bare(barer - door - path_width*2)
+        t.forward(wall_len - barer)
+      else: 
+        t.forward(wall_len - door - path_width*2)
+        bare(barer)
+        dar(door-barer)
+#This little function is for the bare bones of the door and its contruction, without the modefications of the loop's work.
+def dar(forward):
+    t.forward(forward)
+    t.penup()
+    t.forward(path_width * 2)
+    t.pendown()
+#This function stands for the barriers similar with the door, this is the basic commands for the barriers in the maze. 
+def bare(forward):
+  t.forward(forward)
+  t.left(90)
+  t.forward(path_width*2)
+  t.back(path_width*2)
+  t.right(90)
+#Mainpiece refers to the turtle whilst the setheading and its value allows the turtle to move in 4 mains sets of directions on the X and Y axis. north, east, south, and west. 
+def north():
+  mainpiece.setheading(90)
+  mainpiece.forward(1)
+
+def west():
+  mainpiece.setheading(270)
+  mainpiece.forward(1)
+
+def south():
+  mainpiece.setheading(180)
+  mainpiece.forward(1)
+
+def east():
+  mainpiece.setheading(0)
+  mainpiece.forward(1)
+#This calls the twerl function and all of the other loops and functions inside of it.  
+turl()
+#This go to command orders the turtle to be at the exact cordinates of (0,1) when the program is started. 
+mainpiece.goto(0,1)
+#This command allows the program to appear on the screen and be graphical visual. 
+wn = trtl.Screen()
+#all of these onkeypress commands are put here in order to call all the functions of the different possible direction the turtle can take and assign them to the main keys on the keyboard that allow for movement which are W, A, S, D.
+wn.onkeypress(north, "w")
+wn.onkeypress(west, "a")
+wn.onkeypress(south, "s")
+wn.onkeypress(east, "d")
+#Listen allows the program to listen to the user when they press the key.
+wn.listen()
+#Mainloop allows the program to loop correctly.
+wn.mainloop()
